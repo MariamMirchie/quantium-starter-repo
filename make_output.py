@@ -6,7 +6,7 @@ DATA_DIR = "data"
 OUT_PATH = os.path.join(DATA_DIR, "pink_morsels_sales.csv")
 
 def main():
-    csv_paths = sorted(glob.glob(os.path.join(DATA_DIR, "*.csv")))
+    csv_paths = sorted(glob.glob(os.path.join(DATA_DIR, "daily_sales_data_*.csv")))
     if not csv_paths:
         raise FileNotFoundError(f"No CSV files found in {DATA_DIR}/")
 
@@ -24,7 +24,8 @@ def main():
             raise ValueError(f"{path} is missing columns: {sorted(missing)}")
 
   
-        df = df[df["product"] == "Pink Morsels"].copy()
+        df["product"] = df["product"].astype(str).str.strip().str.lower()
+        df = df[df["product"] == "pink morsel"].copy()              
 
         
         df["sales"] = df["quantity"] * df["price"]
